@@ -10,6 +10,8 @@ CLIENT_CERTS:=\
 
 include $(PWD)/.env
 
+### GENERAL COMMANDS
+
 .PHONY: certs
 certs: $(CERTS) $(CLIENT_CERTS)
 
@@ -23,6 +25,8 @@ distclean:
 
 .PHONY: config
 config: mosquitto/config/passwd ruuvibridge/config.yml ~/.influxdbv2/configs .env
+
+### CONFIGURATIONS
 
 # For creating Mosquitto users we need to access the mosquitto_passwd tool which is only inside the container.
 mosquitto/config/passwd:
@@ -43,6 +47,8 @@ ruuvibridge/config.yml:
 .env:
 	cp .env.example $@
 	chmod 0600 $@
+
+### CERTIFICATES
 
 # ROOT CA KEY
 # To remove password protetction, remove '-des3'
