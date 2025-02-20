@@ -22,7 +22,7 @@ distclean:
 	rm -f $(CERT_DIR)/clients/*.crt $(CERT_DIR)/clients/*.key $(CERT_DIR)/clients/*.csr
 
 .PHONY: config
-config: mosquitto/config/passwd ruuvibridge/config.yml ~/.influxdbv2/configs
+config: mosquitto/config/passwd ruuvibridge/config.yml ~/.influxdbv2/configs .env
 
 # For creating Mosquitto users we need to access the mosquitto_passwd tool which is only inside the container.
 mosquitto/config/passwd:
@@ -38,6 +38,10 @@ ruuvibridge/config.yml:
 ~/.influxdbv2/configs:
 	install -m 0700 -d ~/.influxdbv2/
 	cat examples/influxdbv2-config|sed "s/INFLUXDB_TOKEN/${INFLUXDB_ADMIN_TOKEN}/" > $@
+	chmod 0600 $@
+
+.env:
+	cp .env.example $@
 	chmod 0600 $@
 
 # ROOT CA KEY
